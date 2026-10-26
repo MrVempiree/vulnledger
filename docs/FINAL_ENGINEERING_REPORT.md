@@ -7,6 +7,29 @@
 
 ---
 
+## 0. Publication status
+
+The project is published as a public repository: **https://github.com/MrVempiree/vulnledger**
+(branch `main`, description set, language detected as TypeScript).
+
+Publication was performed through the connected GitHub App. 67 of the 68 source
+files were pushed and verified against the remote tree (0 missing, 0 extra);
+local git blob SHAs for `README.md`, `apps/api/src/index.ts`, and
+`package.json` match the remote tree SHAs exactly.
+
+**One file could not be pushed: `.github/workflows/ci.yml`.** The connected GitHub
+App installation does not hold the `workflows` permission scope, and GitHub
+refuses API writes to `.github/workflows/` without it (verified: writes to
+`.github/` succeed, writes to `.github/workflows/` fail, via both `push_files`
+and `create_or_update_file`). The workflow ships instead as
+`docs/github-actions-ci.yml` with copy instructions in `docs/github-actions-ci.md`
+and a "Continuous integration" section in the README.
+
+Repository topics could not be set (no topic-setting tool is available through
+the connection); the README lists suggested topics for manual entry.
+
+---
+
 ## 1. What is implemented vs. what remains incomplete
 
 ### Implemented (v1 MVP scope)
@@ -34,6 +57,8 @@
 
 | Item | Reason |
 |---|---|
+| `.github/workflows/ci.yml` not on the remote | GitHub App lacks the `workflows` scope; workflow shipped as `docs/github-actions-ci.yml` with copy instructions |
+| Repository topics | No topic-setting tool available through the connection; suggested topics listed in the README |
 | Docker Compose execution | Docker not available in this environment; `docker-compose.yml` provided but unverified |
 | Running API / UI | PostgreSQL server not available locally; `DATABASE_URL` required |
 | Test execution | `vitest` tests written but require PostgreSQL; not executed |
