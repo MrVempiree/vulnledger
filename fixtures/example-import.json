@@ -1,0 +1,37 @@
+{
+  "source": "Example Scanner v2",
+  "findings": [
+    {
+      "title": "Reflected XSS in search endpoint",
+      "description": "User-supplied query is reflected unescaped in the HTML response, allowing arbitrary JavaScript execution in the victim's browser.",
+      "source": "Example Scanner v2",
+      "ruleId": "XSS-REFLECTED-01",
+      "fingerprint": "scan-v2:XSS-REFLECTED-01:/search",
+      "component": "frontend/src/pages/Search.tsx",
+      "severity": "high",
+      "confidence": "high",
+      "status": "new",
+      "cwe": "CWE-79",
+      "cve": "",
+      "evidence": "GET /search?q=%3Cscript%3Ealert(1)%3C/script%3E reflected in response body",
+      "remediationNotes": "HTML-encode all user-controlled output and enforce a strict Content-Security-Policy.",
+      "assigneeId": null
+    },
+    {
+      "title": "SQL injection in login form",
+      "description": "The username field is interpolated directly into a SQL query without parameterization, permitting authentication bypass.",
+      "source": "Example Scanner v2",
+      "ruleId": "SQLI-AUTH-02",
+      "fingerprint": "scan-v2:SQLI-AUTH-02:/login",
+      "component": "backend/src/routes/auth.ts",
+      "severity": "critical",
+      "confidence": "high",
+      "status": "triaged",
+      "cwe": "CWE-89",
+      "cve": "",
+      "evidence": "Payload ' OR '1'='1 returned HTTP 200 with session cookie",
+      "remediationNotes": "Use parameterized queries/prepared statements throughout the authentication layer.",
+      "assigneeId": null
+    }
+  ]
+}
