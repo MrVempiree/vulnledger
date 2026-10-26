@@ -93,6 +93,20 @@ pnpm --filter web dev
 
 The UI runs on `http://localhost:5173` and proxies `/api` to the backend.
 
+## Continuous integration
+
+The CI workflow is shipped as `docs/github-actions-ci.yml`. Copy it into place to enable it:
+
+```bash
+mkdir -p .github/workflows
+cp docs/github-actions-ci.yml .github/workflows/ci.yml
+git add .github/workflows/ci.yml
+git commit -m "ci: add GitHub Actions workflow"
+git push
+```
+
+It runs format check, lint, typecheck, unit/integration tests, a production build, a dependency audit, and a secret scan on every push and pull request to `main`. See [`docs/github-actions-ci.md`](docs/github-actions-ci.md) for details and notes on the `TEST_DATABASE_URL` secret.
+
 ## Security
 
 See [`SECURITY.md`](SECURITY.md) for the vulnerability reporting policy and supported versions.
@@ -112,3 +126,4 @@ MIT — see [`LICENSE`](LICENSE).
 - Docker / Docker Compose: `docker-compose.yml` is provided for local database setup but has not been executed in this environment (Docker not available).
 - PostgreSQL: not available locally in this build environment; a real PostgreSQL connection string is required to run the API.
 - Playwright E2E tests are written and CI-configured but require browser binaries to run.
+- Repository topics are not set automatically; add them manually under **Settings → General → Topics**. Suggested: `application-security`, `vulnerability-management`, `findings-tracking`, `typescript`, `express`, `react`, `postgresql`, `security-tools`.

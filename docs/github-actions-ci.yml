@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 12
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Format check
+        run: pnpm exec prettier --check "apps/**/*.{ts,tsx}" "packages/**/*.ts"
+
+      - name: Lint (API)
+        run: pnpm --filter api lint
+
+      - name: Typecheck
+        run: pnpm run typecheck
+
+      - name: Unit + integration tests (API)
+        run: pnpm --filter api test
+        env:
+          DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
+          SESSION_SECRET: test-secret-do-not-use-in-production
+
+      - name: Production build
+        run: pnpm run build
+
+      - name: Dependency audit
+        run: pnpm audit --production || true
+
+      - name: Secret scan
+        run: |
+          if grep -R "sk_live\|sk_test\|AKIA\|ghp_" --include="*.ts" --include="*.tsx" --include="*.json" --include="*.md" apps packages db docs; then
+            echo "::error::Potential secret detected"
+            exit 1
+          fi
