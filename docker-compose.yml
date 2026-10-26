@@ -1,0 +1,24 @@
+# VulnLedger local development database.
+# Requires Docker Compose. This file is intentionally minimal and production-unsafe
+# for anything beyond local development; see SECURITY.md for deployment guidance.
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: vulnledger
+      POSTGRES_USER: vulnledger
+      # POSTGRES_PASSWORD must be provided via .env; no default is shipped.
+      POSTGRES_PASSWORD_FILE: /run/secrets/vulnledger_db_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - vulnledger_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vulnledger -d vulnledger"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  vulnledger_db_data:

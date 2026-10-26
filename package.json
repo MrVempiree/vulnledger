@@ -1,0 +1,25 @@
+{
+  "name": "vulnledger",
+  "version": "1.0.0",
+  "private": true,
+  "description": "VulnLedger — self-hostable vulnerability findings management platform",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=12.0.0"
+  },
+  "packageManager": "pnpm@12.15.0",
+  "scripts": {
+    "dev": "pnpm --filter api dev",
+    "build": "pnpm --filter api build && pnpm --filter web build",
+    "test": "pnpm --filter api test",
+    "test:api": "pnpm --filter api test",
+    "lint": "pnpm --filter api lint && pnpm --filter web lint",
+    "typecheck": "pnpm --filter api typecheck && pnpm --filter web typecheck && pnpm --filter contracts typecheck",
+    "postinstall": "pnpm --filter api install && pnpm --filter web install && pnpm --filter contracts install"
+  },
+  "devDependencies": {
+    "typescript": "~5.6.3",
+    "eslint": "^8.57.1",
+    "prettier": "^3.3.3"
+  }
+}
